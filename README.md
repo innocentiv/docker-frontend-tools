@@ -1,0 +1,114 @@
+# Docker Frontend Tools
+
+This docker image provides some executables for common frontend-build-chains,
+that are needed in most current projects. Ever had a hassle installing
+node and the correct version of sass to compile a specific projects CSS
+and JS Files? That's what this is all about.
+
+## What's included?
+
+After building, the following executables will be available through the docker-image:
+
+  - ruby
+    - sass (@3.4.9)
+    - compass (@1.0.3)
+    - scss-lint
+  - node
+    - gulp (@3.8.10)
+    - grunt-cli (0.1.13)
+    - bower
+    - browserify
+    - eslint
+    - jsonlint
+    - npm-check-updates
+    - stylestats
+
+Normally you don't need all of these, because most of those tools will come
+encapsulated in gulp- or grunt-tasks (grunt-eslint, gulp-stylestats etc. come
+with their own bundled versions of eslint and stylestats).  So by default this
+package only specifies versions for the most needed tools: grunt, gulp, sass
+and compass.
+
+## Installing
+
+Note: I'm on OS X, and have not tested this anywhere else. 
+
+  - Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
+  - Install [boot2docker](https://docs.docker.com/installation/mac/)
+
+(I recommend installing boot2docker via homebrew, but this is not neccessary.
+Remember to set the `DOCKER_HOST` and related variables for your shell.)
+
+After having installed boot2docker start it up with `boot2docker up`.
+This starts the virtual machine and makes the docker-command available.
+
+Check that everything is OK by running `docker version` in your terminal.
+
+Clone this repository, change to the directory and build your docker-image:
+
+```
+git clone git@github.com:webgefrickel/docker-frontend-tools.git
+cd docker-frontend-tools
+docker build -t docker-frontend-tools .
+```
+
+This will take a while, depending on your system and internet connection.
+After it is done, you have will have a tagged docker-image with everything 
+you need to get started!
+
+## Usage
+
+So, how do you run gulp, sass and all the others with the code somewhere
+one your machine? Open up your terminal, change to your project folder
+(usually, where node\_modules and package.json are and from where you would
+run your gulp/grunt-tasks etc.). Let's say you want to run `gulp build`,
+but now using the gulp, that's inside of docker. The command is:
+
+`docker run -it -v $(pwd)/:/code/ docker-frontend-tools gulp build`
+
+Ugly, isn't it? Some explanation:
+
+- `-it` runs the docker command as an interactive shell
+- `-v` mounts your current local directory (`$(pwd)`) into docker as a working directory under `/code/`, so that the gulp/sass etc. inside docker can access your local source files
+- `docker-frontend-tools gulp build` runs gulp build in the just created docker image
+
+And thats about it. Just keep to that pattern, and everything should work
+just fine. E.g. if you want to run just a sass watch task, it should
+look like this:
+
+`docker run -it -v $(pwd)/:/code/ docker-frontend-tools sass --watch src/main.scss:dist/main.css`
+
+I would recommend creating an alias as a simple wrapper, just add this to
+your bash/zsh/whatever-rc: 
+
+```
+# docker run frontend-tools
+alias drft='docker run -it -v $(pwd)/:/code/ docker-frontend-tools'
+```
+
+and use it like this: `drft gulp build` or `drft sass ...`
+
+## Known issues / bugs
+
+For now, using the executables from this docker-image to build your sources
+via dockervolumes (the -v part of the commands above) is *incredibly* slow
+on OS X. This is due to the lack of native volume-mounting: everything is
+done through virtualbox, and this makes it slow. On my machine it almost took
+10 times as long as with the locally installed versions. This is known problem
+and the boot2docker-team is working on it:
+[Issue 593](https://github.com/boot2docker/boot2docker/issues/593),
+[Issue 631](https://github.com/boot2docker/boot2docker/issues/631)
+
+And some watch-tasks are killing the CPU as well. *sigh*
+
+One thing I haven't figured out yet is dockers port-forwarding, meaning:
+If you have a browser-sync or livereload-task running, I have no clue
+how to access the browser-sync proxy etc. running in docker from your
+local machine. Meh :-/
+
+## Future ideas
+
+Replace ruby-sass with node-sass, speeding up things a lot. If it wasn't for
+scss-lint, we could just dump the ruby-dependency.
+
+
