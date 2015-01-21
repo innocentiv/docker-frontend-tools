@@ -15,7 +15,6 @@ ENV GULP_VERSION 3.8.10
 ENV GRUNT_VERSION 0.1.13
 ENV SASS_VERSION 3.4.9
 ENV COMPASS_VERSION 1.0.3
-ENV SCSSLINT_VERSION 0.32.0
 
 # global dependencies / build-essentials and cli-tools
 RUN \
@@ -45,7 +44,7 @@ RUN \
   apt-get install -y --force-yes ruby ruby-dev && \
   gem install sass --no-document --version $SASS_VERSION && \
   gem install compass --no-document --version $COMPASS_VERSION && \
-  gem install scss-lint --no-document --version $SCSSLINT_VERSION
+  gem install scss-lint --no-document
 
 # create the working dir
 RUN mkdir /code
