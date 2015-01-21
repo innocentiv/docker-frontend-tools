@@ -39,9 +39,10 @@ RUN \
   npm install -g stylestats
 
 # Install ruby (2.1 in jessie) and frontend gems (without docs)
+# ruby-dev is needed for building native compass extensions
 # no bundler needed, thats what this dockerfile is for after all
 RUN \
-  apt-get install -y --force-yes ruby && \
+  apt-get install -y --force-yes ruby ruby-dev && \
   gem install sass --no-document --version $SASS_VERSION && \
   gem install compass --no-document --version $COMPASS_VERSION && \
   gem install scss-lint --no-document --version $SCSSLINT_VERSION
