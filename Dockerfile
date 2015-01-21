@@ -1,4 +1,4 @@
-# webgefrickel/docker-frontendtools
+# webgefrickel/docker-frontend-tools
 # VERSION 1.0.0
 
 # using debian results in a smaller image-size :-)
