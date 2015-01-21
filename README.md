@@ -31,7 +31,7 @@ and compass.
 
 ## Installing
 
-Note: I'm on OS X, and have not tested this anywhere else. 
+Note: I'm on OS X, and have not tested this anywhere else.
 
   - Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
   - Install [boot2docker](https://docs.docker.com/installation/mac/)
@@ -53,7 +53,7 @@ docker build -t docker-frontend-tools .
 ```
 
 This will take a while, depending on your system and internet connection.
-After it is done, you have will have a tagged docker-image with everything 
+After it is done, you have will have a tagged docker-image with everything
 you need to get started!
 
 ## Usage
@@ -79,7 +79,7 @@ look like this:
 `docker run -it -v $(pwd)/:/code/ docker-frontend-tools sass --watch src/main.scss:dist/main.css`
 
 I would recommend creating an alias as a simple wrapper, just add this to
-your bash/zsh/whatever-rc: 
+your bash/zsh/whatever-rc:
 
 ```
 # docker run frontend-tools
@@ -88,15 +88,16 @@ alias drft='docker run -it -v $(pwd)/:/code/ docker-frontend-tools'
 
 and use it like this: `drft gulp build` or `drft sass ...`
 
-## But my project needs sass 3.2 and gulp 0.3!
+## But my project needs sass 3.2 and on old version of grunt!
 
-Edit the Dockerfile, change the version-numbers on top, and then rebuild
-the image using:
+Edit the Dockerfile, change the version-numbers on top. If any tools are
+missing, just add them at the correct place (where all the other `npm install`
+and `gem install` commands are) and then rebuild the image using:
 
 `docker build --no-cache -t docker-frontend-tools-legacy-sass-grunt .`
 
-See what I did here? I changed the tag on the image (the `-t` part), so I can 
-have different images with different versions (and use them how I want). 
+See what I did here? I changed the tag on the image (the `-t` part), so I can
+have different images with different versions (and use them how I want).
 You only have to specify the correct image name in the `docker run` command
 and everything should work fine.
 
@@ -105,14 +106,17 @@ and everything should work fine.
 For now, using the executables from this docker-image to build your sources
 via dockervolumes (the -v part of the commands above) is *incredibly* slow
 on OS X. This is due to the lack of native volume-mounting: everything is
-done through virtualbox, and this makes it slow. On my machine it almost took
-10 times as long as with the locally installed versions. This is known problem
-and the boot2docker-team is working on it:
+done through VirtualBox, and this makes it slow. On my machine it almost took
+10 times as long as with the locally installed versions. This is a known problem
+and the boot2docker-team is working on it (volume-mounts via NFS etc.):
 [Issue 593](https://github.com/boot2docker/boot2docker/issues/593),
 [Issue 631](https://github.com/boot2docker/boot2docker/issues/631)
 
-And some watch-tasks are killing the CPU as well. *sigh* Gotta get myself 
+And some watch-tasks are killing the CPU as well. *sigh* Gotta get myself
 a linux box and test it there, without the VirtualBox-Wrapper :-/
+
+Mounting a local folder in docker only works, if this folder is somewhere
+in `/Users/` on your system.
 
 One thing I haven't figured out yet is dockers port-forwarding, meaning:
 If you have a browser-sync or livereload-task running, I have no clue
