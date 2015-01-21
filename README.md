@@ -15,7 +15,7 @@ After building, the following executables will be available through the docker-i
     - scss-lint
   - node
     - gulp (@3.8.10)
-    - grunt-cli (0.1.13)
+    - grunt-cli (@0.1.13)
     - bower
     - browserify
     - eslint
@@ -88,7 +88,7 @@ alias drft='docker run -it -v $(pwd)/:/code/ docker-frontend-tools'
 
 and use it like this: `drft gulp build` or `drft sass ...`
 
-## But my project needs sass 3.2 and on old version of grunt!
+## But my project needs sass 3.2 and an old version of grunt!
 
 Edit the Dockerfile, change the version-numbers on top. If any tools are
 missing, just add them at the correct place (where all the other `npm install`
