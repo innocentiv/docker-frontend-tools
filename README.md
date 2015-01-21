@@ -88,6 +88,18 @@ alias drft='docker run -it -v $(pwd)/:/code/ docker-frontend-tools'
 
 and use it like this: `drft gulp build` or `drft sass ...`
 
+## But my project needs sass 3.2 and gulp 0.3!
+
+Edit the Dockerfile, change the version-numbers on top, and then rebuild
+the image using:
+
+`docker build --no-cache -t docker-frontend-tools-legacy-sass-grunt .`
+
+See what I did here? I changed the tag on the image (the `-t` part), so I can 
+have different images with different versions (and use them how I want). 
+You only have to specify the correct image name in the `docker run` command
+and everything should work fine.
+
 ## Known issues / bugs
 
 For now, using the executables from this docker-image to build your sources
@@ -99,16 +111,10 @@ and the boot2docker-team is working on it:
 [Issue 593](https://github.com/boot2docker/boot2docker/issues/593),
 [Issue 631](https://github.com/boot2docker/boot2docker/issues/631)
 
-And some watch-tasks are killing the CPU as well. *sigh*
+And some watch-tasks are killing the CPU as well. *sigh* Gotta get myself 
+a linux box and test it there, without the VirtualBox-Wrapper :-/
 
 One thing I haven't figured out yet is dockers port-forwarding, meaning:
 If you have a browser-sync or livereload-task running, I have no clue
 how to access the browser-sync proxy etc. running in docker from your
 local machine. Meh :-/
-
-## Future ideas
-
-Replace ruby-sass with node-sass, speeding up things a lot. If it wasn't for
-scss-lint, we could just dump the ruby-dependency.
-
-
