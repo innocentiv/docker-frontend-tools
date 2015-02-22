@@ -10,11 +10,11 @@ and JS Files? That's what this is all about.
 After building, the following executables will be available through the docker-image:
 
   - ruby
-    - sass (@3.4.9)
+    - sass (@3.4.12)
     - compass (@1.0.3)
     - scss-lint
   - node
-    - gulp (@3.8.10)
+    - gulp (@3.8.11)
     - grunt-cli (@0.1.13)
     - bower
     - browserify
