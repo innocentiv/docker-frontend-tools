@@ -11,9 +11,9 @@ MAINTAINER Steffen Rademacker <kontakt@webgefrickel.de>
 # other tools will be installed too, but the versions for those
 # is not really relevant - most are capsuled in gulp/grunt-*
 # node-modules anyways - the others are just for convenience
-ENV GULP_VERSION 3.8.10
+ENV GULP_VERSION 3.8.11
 ENV GRUNT_VERSION 0.1.13
-ENV SASS_VERSION 3.4.9
+ENV SASS_VERSION 3.4.12
 ENV COMPASS_VERSION 1.0.3
 
 # global dependencies / build-essentials and cli-tools
