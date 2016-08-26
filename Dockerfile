@@ -59,7 +59,7 @@ RUN \
   apt-get install -y --force-yes ruby ruby-dev && \
   gem install sass --no-document --version $SASS_VERSION && \
   gem install compass --no-document --version $COMPASS_VERSION && \
-  gem install scss-lint --no-document
+  gem install scss_lint --no-document
 
 # create the working dir
 RUN mkdir /code
