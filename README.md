@@ -10,12 +10,12 @@ and JS Files? That's what this is all about.
 After building, the following executables will be available through the docker-image:
 
   - ruby
-    - sass (@3.4.12)
+    - sass (@3.4.22)
     - compass (@1.0.3)
     - scss-lint
   - node
-    - gulp (@3.8.11)
-    - grunt-cli (@0.1.13)
+    - gulp (@3.9.1)
+    - grunt-cli (@1.2.0)
     - bower
     - browserify
     - eslint
@@ -31,16 +31,7 @@ and compass.
 
 ## Installing
 
-Note: I'm on OS X, and have not tested this anywhere else.
-
-  - Install [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
-  - Install [boot2docker](https://docs.docker.com/installation/mac/)
-
-(I recommend installing boot2docker via homebrew, but this is not neccessary.
-Remember to set the `DOCKER_HOST` and related variables for your shell.)
-
-After having installed boot2docker start it up with `boot2docker up`.
-This starts the virtual machine and makes the docker-command available.
+Note: I'm on ubuntu 16.04LTS, and have not tested this anywhere else.
 
 Check that everything is OK by running `docker version` in your terminal.
 
@@ -49,7 +40,7 @@ Clone this repository, change to the directory and build your docker-image:
 ```
 git clone git@github.com:webgefrickel/docker-frontend-tools.git
 cd docker-frontend-tools
-docker build -t docker-frontend-tools .
+
 ```
 
 This will take a while, depending on your system and internet connection.
