@@ -1,7 +1,6 @@
 # encelado748/docker-frontend-tools
 # VERSION 1.0.1
 
-# using debian results in a smaller image-size :-)
 FROM ubuntu:latest
 
 # Twitter: @webgefrickel
@@ -52,7 +51,7 @@ RUN \
   npm install -g npm-check-updates && \
   npm install -g stylestats
 
-# Install ruby (2.1 in jessie) and frontend gems (without docs)
+# Install ruby (2.3 in ubuntu) and frontend gems (without docs)
 # ruby-dev is needed for building native compass extensions
 # no bundler needed, thats what this dockerfile is for after all
 RUN \
