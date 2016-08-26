@@ -2,10 +2,10 @@
 # VERSION 1.0.1
 
 # using debian results in a smaller image-size :-)
-FROM debian:jessie
+FROM ubuntu:latest
 
 # Twitter: @webgefrickel
-MAINTAINER Steffen Rademacker <kontakt@webgefrickel.de>
+MAINTAINER Valerio Innocenti Sedili <vinnocenti@outlook.it>
 
 # set the wanted versions for dev-tools here
 # other tools will be installed too, but the versions for those
@@ -17,6 +17,19 @@ ENV SASS_VERSION 3.4.22
 ENV COMPASS_VERSION 1.0.3
 ENV GOSU_VERSION 1.9
 
+# setup gosu
+RUN set -x \
+    && apt-get update && apt-get install -y --no-install-recommends ca-certificates wget && rm -rf /var/lib/apt/lists/* \
+    && dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
+    && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch" \
+    && wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc" \
+    && export GNUPGHOME="$(mktemp -d)" \
+    && gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
+    && gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
+    && rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc \
+    && chmod +x /usr/local/bin/gosu \
+    && gosu nobody true \
+    && apt-get purge -y --auto-remove ca-certificates wget
 
 # global dependencies / build-essentials and cli-tools
 RUN \
@@ -27,8 +40,8 @@ RUN \
 
 # install most current node and global node packages
 RUN \
-  curl -sL https://deb.nodesource.com/setup | bash - && \
-  apt-get install -y --force-yes nodejs && \
+  curl -sL https://deb.nodesource.com/setup_6.x | bash - &&\
+  apt-get install -y nodejs && \
   curl -sL https://npmjs.org/install.sh | sh && \
   npm install -g gulp@$GULP_VERSION && \
   npm install -g grunt-cli@$GRUNT_VERSION && \
@@ -54,19 +67,7 @@ RUN mkdir /code
 # set the working dir
 WORKDIR /code
 
-# setup gosu to exec command using current user id
-RUN set -x \
-    && apt-get update && apt-get install -y --no-install-recommends ca-certificates wget && rm -rf /var/lib/apt/lists/* \
-    && dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" \
-    && wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch" \
-    && wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$dpkgArch.asc" \
-    && export GNUPGHOME="$(mktemp -d)" \
-    && gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
-    && gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
-    && rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc \
-    && chmod +x /usr/local/bin/gosu \
-    && gosu nobody true \
-    && apt-get purge -y --auto-remove ca-certificates wget
+
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 

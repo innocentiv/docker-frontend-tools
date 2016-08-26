@@ -74,7 +74,7 @@ your bash/zsh/whatever-rc:
 
 ```
 # docker run frontend-tools
-alias drft='docker run -it -v $(pwd)/:/code/ docker-frontend-tools'
+alias drft='sudo docker run -it -e LOCAL_USER_ID=$UID -v $(pwd)/:/code/ docker-frontend-tools'
 ```
 
 and use it like this: `drft gulp build` or `drft sass ...`
