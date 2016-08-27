@@ -51,6 +51,7 @@ RUN \
   && npm install -g jsonlint \
   && npm install -g npm-check-updates \
   && npm install -g stylestats \
+  && npm install -g foundation-cli \
   && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Install ruby (2.3 in ubuntu) and frontend gems (without docs)
