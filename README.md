@@ -27,6 +27,7 @@ After building, the following executables will be available through the docker-i
     - jsonlint
     - npm-check-updates
     - stylestats
+    - foundation-cli
 
 Normally you don't need all of these, because most of those tools will come
 encapsulated in gulp- or grunt-tasks (grunt-eslint, gulp-stylestats etc. come
