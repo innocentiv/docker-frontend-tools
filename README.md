@@ -5,6 +5,11 @@ that are needed in most current projects. Ever had a hassle installing
 node and the correct version of sass to compile a specific projects CSS
 and JS Files? That's what this is all about.
 
+Note: this is a fork of webgefrickel/docker-frontend-tools created for my own 
+benefit. I use ubuntu 16.04LTS on my workstation so I added gosu to fix files 
+permissions.
+
+
 ## What's included?
 
 After building, the following executables will be available through the docker-image:
@@ -33,14 +38,12 @@ and compass.
 
 Note: I'm on ubuntu 16.04LTS, and have not tested this anywhere else.
 
-Check that everything is OK by running `docker version` in your terminal.
-
 Clone this repository, change to the directory and build your docker-image:
 
 ```
 git clone git@github.com:webgefrickel/docker-frontend-tools.git
 cd docker-frontend-tools
-
+docker build -t docker-frontend-tools .
 ```
 
 This will take a while, depending on your system and internet connection.
@@ -55,11 +58,13 @@ one your machine? Open up your terminal, change to your project folder
 run your gulp/grunt-tasks etc.). Let's say you want to run `gulp build`,
 but now using the gulp, that's inside of docker. The command is:
 
-`docker run -it -v $(pwd)/:/code/ docker-frontend-tools gulp build`
+`docker run -it --rm -e LOCAL_USER_ID=$UID -v $(pwd)/:/code/ docker-frontend-tools gulp build`
 
 Ugly, isn't it? Some explanation:
 
 - `-it` runs the docker command as an interactive shell
+- `--rm` remove the container after exit
+- `-e` set the LOCAL_USER_ID variable for the creation of the user inside the container
 - `-v` mounts your current local directory (`$(pwd)`) into docker as a working directory under `/code/`, so that the gulp/sass etc. inside docker can access your local source files
 - `docker-frontend-tools gulp build` runs gulp build in the just created docker image
 
@@ -67,14 +72,14 @@ And thats about it. Just keep to that pattern, and everything should work
 just fine. E.g. if you want to run just a sass watch task, it should
 look like this:
 
-`docker run -it -v $(pwd)/:/code/ docker-frontend-tools sass --watch src/main.scss:dist/main.css`
+`docker run -it --rm -e LOCAL_USER_ID=$UID -v $(pwd)/:/code/ docker-frontend-tools sass --watch src/main.scss:dist/main.css`
 
 I would recommend creating an alias as a simple wrapper, just add this to
-your bash/zsh/whatever-rc:
+your ~/.bash_aliases :
 
 ```
 # docker run frontend-tools
-alias drft='sudo docker run -it -e LOCAL_USER_ID=$UID -v $(pwd)/:/code/ docker-frontend-tools'
+alias drft='sudo docker run -it --rm -e LOCAL_USER_ID=$UID -v $(pwd)/:/code/ docker-frontend-tools'
 ```
 
 and use it like this: `drft gulp build` or `drft sass ...`
