@@ -42,7 +42,7 @@ Note: I'm on ubuntu 16.04LTS, and have not tested this anywhere else.
 Clone this repository, change to the directory and build your docker-image:
 
 ```
-git clone git@github.com:webgefrickel/docker-frontend-tools.git
+git clone https://github.com/encelado748/docker-frontend-tools.git
 cd docker-frontend-tools
 docker build -t docker-frontend-tools .
 ```
